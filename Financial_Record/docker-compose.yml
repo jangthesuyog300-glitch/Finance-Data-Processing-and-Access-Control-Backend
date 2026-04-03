@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: finance-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: ${DATASOURCE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATASOURCE_PASSWORD:-Suyog@1234}
+      POSTGRES_DB: finance_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: finance-backend
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8081:8081"
+    environment:
+      DATASOURCE_URL: jdbc:postgresql://db:5432/finance_db
+      DATASOURCE_USER: ${DATASOURCE_USER:-postgres}
+      DATASOURCE_PASSWORD: ${DATASOURCE_PASSWORD:-Suyog@1234}
+      JWT_SECRET: ${JWT_SECRET:-f4e2b8c9d0a1b2c3d4e5f6a7b8c9d0a1b2c3d4e5f6a7b8c9d0a1b2c3d4e5f6a7}
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:3000,http://localhost:5173}
+
+volumes:
+  pgdata:

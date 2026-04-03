@@ -3,7 +3,7 @@ package com.example.Financial_Record;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+@SpringBootTest(classes = com.finance.dashboard.FinanceDashboardApplication.class)
 class FinancialRecordApplicationTests {
 
 	@Test
