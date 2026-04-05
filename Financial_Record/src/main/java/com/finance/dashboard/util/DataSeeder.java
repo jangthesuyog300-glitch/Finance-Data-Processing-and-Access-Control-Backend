@@ -34,7 +34,7 @@ public class DataSeeder implements CommandLineRunner {
             User user = userRepository.findByEmail("test@gmail.com")
                     .orElseGet(() -> {
                         User newUser = User.builder()
-                                .name("Test User")
+                                .name("Admin User")
                                 .email("test@gmail.com")
                                 .password(passwordEncoder.encode("password123"))
                                 .role(Role.ROLE_ADMIN)
@@ -42,6 +42,7 @@ public class DataSeeder implements CommandLineRunner {
                                 .build();
                         return userRepository.save(newUser);
                     });
+
 
             // 2. Create 10 sample records
             List<FinancialRecord> records = Arrays.asList(

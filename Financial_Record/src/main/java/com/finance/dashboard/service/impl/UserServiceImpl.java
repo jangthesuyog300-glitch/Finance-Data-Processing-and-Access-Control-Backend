@@ -34,14 +34,19 @@ public class UserServiceImpl implements UserService {
         if (req.getRole() != null) {
             try {
                 String roleStr = req.getRole().toUpperCase();
+                // Ensure consistency with "ROLE_" prefix
                 if (!roleStr.startsWith("ROLE_")) {
                     roleStr = "ROLE_" + roleStr;
                 }
                 role = Role.valueOf(roleStr);
             } catch (Exception e) {
-                // Default to VIEWER if invalid
+                // Fallback for common UI values if 'ROLE_' prefix isn't handled perfectly in valueOf
+                if (req.getRole().equalsIgnoreCase("ADMIN")) role = Role.ROLE_ADMIN;
+                else if (req.getRole().equalsIgnoreCase("ANALYST")) role = Role.ROLE_ANALYST;
+                else role = Role.ROLE_VIEWER;
             }
         }
+
 
         User u = User.builder()
                 .email(req.getEmail())
